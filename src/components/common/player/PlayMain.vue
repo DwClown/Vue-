@@ -8,7 +8,7 @@
       <div class="singer">
         <span v-for="item of songInfo.singer" :key="item.id">{{item.name}}</span>
       </div>
-      <div class="lrc">歌词</div>
+      <div class="lrc">{{lrc}}</div>
     </div>
   </div>
 </template>
@@ -22,6 +22,11 @@
         required: true
       }
     },
+    computed:{
+      lrc(){
+        return this.$store.state.currentLrc
+      }
+    }
   }
 </script>
 
@@ -67,5 +72,6 @@
 
   .playMain .text .lrc {
     margin-top: 5px;
+    height: 20px;
   }
 </style>

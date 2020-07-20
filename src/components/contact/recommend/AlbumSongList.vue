@@ -27,13 +27,13 @@
       songList: {
         type: Array,
         required: true,
-        songImg:'',
-        songUrl:'',
+        songImg: '',
+        songUrl: '',
       }
     },
     methods: {
       songClick(song) {
-        getSong(song,this)
+        getSong(song, this)
       }
     }
   }

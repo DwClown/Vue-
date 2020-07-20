@@ -9,6 +9,7 @@ export default new Vuex.Store({
     currentSongIndex: 0,
     isFullScreen: false,
     isPlay: false,
+    currentLrc: '歌词'
   },
   getters: {
     //歌曲列表长度
@@ -40,6 +41,10 @@ export default new Vuex.Store({
         return state.mySongList
       else
         return null
+    },
+    //返回当前歌词
+    getCurrentLrc(state) {
+      return state.currentLrc
     }
   },
   mutations: {
@@ -98,6 +103,10 @@ export default new Vuex.Store({
       if (state.currentSongIndex > state.mySongList.length - 1) {
         state.currentSongIndex = 0
       }
+    },
+    //修改当前歌词
+    changeCurrentLrc(state, lrc) {
+      state.currentLrc = lrc
     }
   },
   actions: {},

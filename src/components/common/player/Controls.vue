@@ -32,6 +32,10 @@
       musicUrl: {
         type: String,
         required: true,
+      },
+      lrc: {
+        type: Array,
+        required: true
       }
     },
     data() {
@@ -56,6 +60,13 @@
         this.currentTime = em + ":" + es
         this.$refs.currentLine.style.width =
           `${this.$refs.video.currentTime / this.$refs.video.duration * 100}%`
+        for (let i = 0; i < this.lrc.length; i++) {
+          if ((this.$refs.video.currentTime + 0.5) >= this.lrc[i].time &&
+            this.$refs.video.currentTime <
+            this.lrc[i + 1].time) {
+            this.$store.commit("changeCurrentLrc", this.lrc[i].text)
+          }
+        }
       },
       start() {
         let cm = parseInt(this.$refs.video.duration / 60)

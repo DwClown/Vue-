@@ -9,7 +9,7 @@
     </div>
     <div class="box">
       <play-main :song-info="songInfo"/>
-      <controls :music-url="songUrl"/>
+      <controls :music-url="songUrl" :lrc="song.lrc"/>
     </div>
   </div>
 </template>
