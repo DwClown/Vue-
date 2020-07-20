@@ -25,7 +25,7 @@
     position: fixed;
     bottom: 0;
     left: 0;
-    z-index: 90;
+    z-index: 80;
     background-color: #333333;
   }
 </style>

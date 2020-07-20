@@ -33,7 +33,7 @@
   import MyPullUpScroll from "components/common/myScroll/MyPullUpScroll";
 
   import {getSingerSongList} from "network/singer";
-  import {getSongInfo} from "assets/js/getSong";
+  import {getSong} from "assets/js/songClick";
 
   export default {
     name: "SingerInfo",
@@ -80,7 +80,7 @@
         this.$refs.myPullUpScroll.isPullUpLoad = false
       },
       singerSongClick(song){
-        getSongInfo(this, song)
+        getSong(song,this)
       }
     },
     components: {

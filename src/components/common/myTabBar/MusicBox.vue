@@ -48,20 +48,20 @@
       //下一曲
       next() {
         this.$store.commit("nextSong")
-      }
+      },
     },
     watch: {
-      songInfo(newValue) {
+      song(newValue) {
         if (newValue !== null) {
-          this.imgUrl = newValue.img
+          this.imgUrl = this.song.img
           this.name = newValue.name
         } else {
           this.imgUrl = require('assets/images/music.svg')
           this.name = '咕咚音乐，享受更好的生活'
         }
       },
-      length(newValue){
-        if(newValue===0){
+      length(newValue) {
+        if (newValue === 0) {
           this.imgUrl = require('assets/images/music.svg')
           this.name = '咕咚音乐，享受更好的生活'
         }
@@ -69,18 +69,18 @@
     },
     //页面初始化时，判断本地是否存储有歌曲，有则返回最上方歌曲 没有则使用默认图片和文字
     created() {
-      if (this.songInfo === null) {
+      if (this.song === null) {
         this.imgUrl = require('assets/images/music.svg')
         this.name = '咕咚音乐，享受更好的生活'
       } else {
-        this.imgUrl = this.songInfo.img
-        this.name = this.songInfo.name
+        this.imgUrl = this.song.img
+        this.name = this.song.name
       }
     },
     computed: {
       //返回歌曲图片的名字
-      songInfo() {
-        return this.$store.getters.getSongInfo
+      song() {
+        return this.$store.getters.getSong
       },
       isPlay() {
         return this.$store.getters.playStatus

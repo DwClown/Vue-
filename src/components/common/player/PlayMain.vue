@@ -1,8 +1,7 @@
 <template>
   <div class="playMain">
     <div class="img">
-      <img
-          :src="songInfo.img">
+      <img :src="songInfo.img">
     </div>
     <div class="text">
       <div class="name">{{songInfo.name}}</div>

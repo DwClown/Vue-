@@ -38,7 +38,7 @@
 
 <style scoped>
   .header {
-    z-index: 99;
+    z-index: 90;
     background-color: #333333;
     width: 100vw;
     height: 50px;

@@ -35,17 +35,26 @@
     },
     methods: {
       myDelete(index) {
-        this.songList.splice(index, 1)
-        localStorage.setItem("songList",JSON.stringify(this.songList))
+        this.$store.commit("delete", index)
       }
     },
     created() {
-      this.songList = JSON.parse(localStorage.getItem("songList"))
+      this.songList = this.$store.getters.getSongList
     }
   }
 </script>
 
 <style scoped>
+  .mySongList {
+    width: 100vw;
+    height: 100vh;
+    z-index: 85;
+    background-color: #222222;
+    position: fixed;
+    top:0;
+    left: 0;
+  }
+
   .mySongList .songItem {
     height: 50px;
     padding: 10px 20px;

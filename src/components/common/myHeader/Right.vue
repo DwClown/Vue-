@@ -12,6 +12,7 @@
         this.$router.push({
           path: '/mySongList'
         })
+        this.$store.commit("stopScreen")
       }
     }
   }

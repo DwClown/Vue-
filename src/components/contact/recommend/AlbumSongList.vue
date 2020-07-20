@@ -19,19 +19,21 @@
 </template>
 
 <script>
-  import {getSongInfo} from "assets/js/getSong";
+  import {getSong} from "assets/js/songClick";
 
   export default {
     name: "AlbumSongList",
     props: {
       songList: {
         type: Array,
-        required: true
+        required: true,
+        songImg:'',
+        songUrl:'',
       }
     },
     methods: {
       songClick(song) {
-        getSongInfo(this, song)
+        getSong(song,this)
       }
     }
   }

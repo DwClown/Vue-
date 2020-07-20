@@ -31,7 +31,7 @@
   import MyPullUpScroll from "components/common/myScroll/MyPullUpScroll";
 
   import {getRankSongList} from "network/rank";
-  import {getSongInfo} from "assets/js/getSong";
+  import {getSong} from "assets/js/songClick";
 
   export default {
     name: "RankSongList",
@@ -81,7 +81,7 @@
         this.$refs.myPullUpScroll.isPullUpLoad = false
       },
       rankSongClick(song){
-        getSongInfo(this, song)
+        getSong(song,this)
       }
     },
     created() {

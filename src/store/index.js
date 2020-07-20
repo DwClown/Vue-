@@ -30,26 +30,22 @@ export default new Vuex.Store({
       else
         return null
     },
-    //返回当前索引歌曲名字和图片 默认索引0
-    getSongInfo(state) {
-      if (state.mySongList.length !== 0) {
-        let info = {
-          img: state.mySongList[state.currentSongIndex].img,
-          name: state.mySongList[state.currentSongIndex].name
-        }
-        return info
-      } else
-        return null
-    },
     //播放状态
     playStatus(state) {
       return state.isPlay
+    },
+    //返回所有的歌曲
+    getSongList(state) {
+      if (state.mySongList.length !== 0)
+        return state.mySongList
+      else
+        return null
     }
   },
   mutations: {
     //网页初始化时读取本地数据
     initSongList(state) {
-      state.mySongList = JSON.parse(localStorage.getItem("songList"))
+      state.mySongList = JSON.parse(localStorage.getItem("mySongList"))
       if (state.mySongList === null) {
         state.mySongList = []
       }
@@ -63,12 +59,23 @@ export default new Vuex.Store({
         state.mySongList.unshift(song)
       }
       state.currentSongIndex = 0
-      //本地存储歌曲列表
-      localStorage.setItem("songList", JSON.stringify(state.mySongList))
+      localStorage.setItem("mySongList", JSON.stringify(state.mySongList))
+    },
+    //删除指定位置的歌曲
+    delete(state, index) {
+      if (state.mySongList.length !== 0) {
+        state.mySongList.splice(index, 1)
+        //本地存储歌曲列表
+        localStorage.setItem("mySongList", JSON.stringify(state.mySongList))
+      }
     },
     //改变全屏状态
     changeScreen(state) {
       state.isFullScreen = !state.isFullScreen
+    },
+    //关闭全屏
+    stopScreen(state) {
+      state.isFullScreen = false
     },
     //暂停播放
     stopMusic(state, status) {

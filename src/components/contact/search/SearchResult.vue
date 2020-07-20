@@ -32,7 +32,7 @@
   import MyPullUpScroll from "components/common/myScroll/MyPullUpScroll";
 
   import {getSearchResult} from "network/search";
-  import {getSongInfo} from "assets/js/getSong";
+  import {getSong} from "assets/js/songClick";
 
   export default {
     name: "SearchResult",
@@ -102,7 +102,7 @@
         })
       },
       resultSongClick(song) {
-        getSongInfo(this, song)
+        getSong(song,this)
       }
     },
     created() {

@@ -29,7 +29,8 @@
         isPlay: false,
         title: 'Goo Music',
         songInfo: {},
-        songUrl: ''
+        songUrl: '',
+        songLrc: []
       }
     },
     methods: {
@@ -37,7 +38,7 @@
         this.$refs.player.style.height = '0'
         this.$refs.player.style.top = '100vh'
         this.$store.commit("changeScreen")
-      }
+      },
     },
     components: {
       DownHeader,
@@ -58,12 +59,12 @@
         }
       },
       song(newValue) {
-        if(newValue!==null){
+        if (newValue !== null) {
           this.songInfo = {
-            id: newValue.id,
-            img: newValue.img,
-            name: newValue.name,
-            singer: newValue.singer
+            id: this.song.id,
+            img: this.song.img,
+            name: this.song.name,
+            singer: this.song.singer,
           }
           this.songUrl = newValue.url
         }
@@ -79,7 +80,7 @@
           id: this.song.id,
           img: this.song.img,
           name: this.song.name,
-          singer: this.song.singer
+          singer: this.song.singer,
         }
         this.songUrl = this.song.url
       }
@@ -88,15 +89,12 @@
       isFullScreen() {
         return this.$store.getters.screenStatus
       },
-      currentIndex() {
-        return this.$store.getters.currentSongIndex
-      },
-      length(){
+      length() {
         return this.$store.getters.length
       },
       song() {
         return this.$store.getters.getSong
-      }
+      },
     },
   }
 </script>

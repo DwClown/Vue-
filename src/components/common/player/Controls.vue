@@ -121,11 +121,23 @@
           this.$refs.video.play()
         else
           this.$refs.video.pause()
+      },
+      length(newValue) {
+        if (newValue === 0) {
+          this.$refs.video.pause()
+          this.$refs.video.setAttribute("src", "")
+          this.currentTime = 0
+          this.$refs.currentLine.style.width = "0"
+          this.$store.commit("stopMusic", false)
+        }
       }
     },
     computed: {
       isPlay() {
         return this.$store.getters.playStatus
+      },
+      length() {
+        return this.$store.getters.length
       }
     }
   }
