@@ -26,9 +26,9 @@
         <span class="iconfont icon-ziyuan-"></span>
       </div>
     </div>
-    <iframe style="display:none">
-      <audio id="video" ref="video" autoplay :src="musicUrl"></audio>
-    </iframe>
+    <audio id="video" autoplay ref="video" :src="musicUrl">
+      <source :src="musicUrl">
+    </audio>
   </div>
 </template>
 
@@ -62,10 +62,12 @@
     methods: {
       play() {
         this.$store.commit("changePlay")
-        if (this.isPlay)
+        if (this.isPlay) {
           this.$refs.video.play()
-        else
+        } else {
           this.$refs.video.pause()
+          this.$refs.video.autoplay = false
+        }
       },
       playing() {
         //进度条的改变
@@ -101,7 +103,6 @@
         this.$refs.currentLine.style.width = "0"
         this.currentTime = "0:00"
         this.$store.commit("changeCurrentLrc", "")
-        this.$refs.video.autoplay = true
         //随机播放
         if (this.currentMode === 0) {
           let index = Math.floor(Math.random() * this.length)
@@ -111,6 +112,8 @@
         } else {  //列表播放
           this.nextSong()
         }
+        this.$refs.video.autoplay = true
+        this.$refs.video.play()
       },
       moveStart(e) {
         this.$refs.video.pause()
@@ -149,10 +152,10 @@
       //   this.$store.commit("stopMusic", false)
       //   this.$refs.video.pause()
       // },
-      // loaded() {
-      //   this.$store.commit("stopMusic", true)
-      //   this.$refs.video.play()
-      // },
+      loaded() {
+        this.$store.commit("stopMusic", true)
+        this.$refs.video.play()
+      },
       modeClick() {
         this.status++
         if (this.status > 2)
@@ -167,15 +170,15 @@
       this.$refs.video.addEventListener("canplay", this.start)
       this.$refs.video.addEventListener("ended", this.end)
       // this.$refs.video.addEventListener("waiting", this.waiting)
-      // this.$refs.video.addEventListener("playing", this.loaded)
+      this.$refs.video.addEventListener("playing", this.loaded)
       this.$refs.line.addEventListener("touchstart", this.moveStart)
       this.$refs.line.addEventListener("touchmove", this.move)
       this.$refs.line.addEventListener("touchend", this.moveEnd)
-      this.$store.commit("stopMusic", false)
+      //
       this.$refs.video.autoplay = false
     },
     watch: {
-      musicUrl() {
+      musicUrl(newValue) {
         this.$refs.video.currentTime = 0
         this.$refs.currentLine.style.width = "0"
       },
@@ -214,6 +217,9 @@
       },
       currentMode() {
         return this.$store.getters.getMode
+      },
+      currentIndex() {
+        return this.$store.getters.currentSongIndex
       }
     }
   }

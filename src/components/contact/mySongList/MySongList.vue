@@ -36,6 +36,7 @@
     methods: {
       myDelete(index) {
         this.$store.commit("delete", index)
+        this.$store.commit("stopMusic",false)
       }
     },
     created() {

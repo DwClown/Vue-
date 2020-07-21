@@ -7,9 +7,9 @@
         <center :title="title"/>
         <right/>
       </div>
-      <div class="box" v-if="song">
-        <play-main :song-info="songInfo"/>
-        <controls :music-url="songUrl" :lrc="song.lrc"/>
+      <div class="box" v-show="song">
+        <play-main :song-info="songInfo" v-if="Object.keys(songInfo).length"/>
+        <controls :music-url="songUrl" :lrc="songLrc"/>
       </div>
   </div>
 </template>
@@ -67,6 +67,7 @@
             singer: this.song.singer,
           }
           this.songUrl = newValue.url
+          this.songLrc = newValue.lrc
         }
       }
     },
@@ -83,6 +84,9 @@
           singer: this.song.singer,
         }
         this.songUrl = this.song.url
+        this.songLrc = this.song.lrc
+      }else{
+        console.log("没有歌曲");
       }
     },
     computed: {
