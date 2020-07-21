@@ -1,6 +1,5 @@
 <template>
   <div class="controls">
-    <audio id="video" ref="video" :src="musicUrl"></audio>
     <div class="line" ref="line">
       <div class="allLine"></div>
       <div class="currentLine" ref="currentLine">
@@ -10,6 +9,9 @@
       <span class="endTime">{{allTime}}</span>
     </div>
     <div class="box">
+      <div class="mode" @click="modeClick">
+        <span ref="mode" :class="mode[currentMode].class"></span>
+      </div>
       <div class="pre" @click.stop="preSong">
         <span class="iconfont icon-yduishangyiqu"></span>
       </div>
@@ -20,7 +22,13 @@
       <div class="next" @click.stop="nextSong">
         <span class="iconfont icon-yduixiayiqu"></span>
       </div>
+      <div class="downLoad">
+        <span class="iconfont icon-ziyuan-"></span>
+      </div>
     </div>
+    <iframe style="display:none">
+      <audio id="video" ref="video" autoplay :src="musicUrl"></audio>
+    </iframe>
   </div>
 </template>
 
@@ -40,9 +48,15 @@
     },
     data() {
       return {
-        allTime: '',
+        allTime: '00:00',
         time: 0,
         currentTime: '0:00',
+        status: 0,
+        mode: [
+          {status: 0, class: "iconfont icon-suijibofang"},
+          {status: 1, class: "iconfont icon-danquxunhuan"},
+          {status: 2, class: "iconfont icon-icon-"},
+        ]
       }
     },
     methods: {
@@ -54,17 +68,24 @@
           this.$refs.video.pause()
       },
       playing() {
+        //进度条的改变
         let em = parseInt(this.$refs.video.currentTime / 60)
         let es = parseInt(this.$refs.video.currentTime % 60) < 10 ? '0' +
           parseInt(this.$refs.video.currentTime % 60) : parseInt(this.$refs.video.currentTime % 60)
         this.currentTime = em + ":" + es
         this.$refs.currentLine.style.width =
           `${this.$refs.video.currentTime / this.$refs.video.duration * 100}%`
-        for (let i = 0; i < this.lrc.length; i++) {
-          if ((this.$refs.video.currentTime + 0.5) >= this.lrc[i].time &&
-            this.$refs.video.currentTime <
-            this.lrc[i + 1].time) {
-            this.$store.commit("changeCurrentLrc", this.lrc[i].text)
+        //歌词的改变
+        if (this.lrc.length === 0) {
+          this.$store.commit("changeCurrentLrc", "暂无歌词")
+        } else {
+          for (let i = 0; i < this.lrc.length; i++) {
+            if (i === this.lrc.length - 1 && (this.$refs.video.currentTime + 0.5) >= this.lrc[i].time) {
+              this.$store.commit("changeCurrentLrc", this.lrc[i].text)
+            } else if ((this.$refs.video.currentTime + 0.5) >= this.lrc[i].time &&
+              this.$refs.video.currentTime < this.lrc[i + 1].time) {
+              this.$store.commit("changeCurrentLrc", this.lrc[i].text)
+            }
           }
         }
       },
@@ -80,6 +101,9 @@
         this.currentTime = 0
         this.$refs.currentLine.style.width = "0"
         this.currentTime = "0:00"
+        this.$store.commit("changeCurrentLrc", "")
+        if (this.currentMode === 2)
+          this.nextSong()
       },
       moveStart(e) {
         this.$refs.video.pause()
@@ -111,12 +135,30 @@
       },
       nextSong() {
         this.$store.commit("nextSong")
-      }
+      },
+      waiting() {
+        this.$store.commit("stopMusic", false)
+        this.$refs.video.pause()
+      },
+      loaded() {
+        this.$store.commit("stopMusic", true)
+        this.$refs.video.play()
+      },
+      modeClick() {
+        this.status++
+        if (this.status > 2)
+          this.status = 0
+        else if (this.status < 0)
+          this.status = 2
+        this.$store.commit("changePlayMode", this.status)
+      },
     },
     mounted() {
       this.$refs.video.addEventListener("timeupdate", this.playing)
       this.$refs.video.addEventListener("canplay", this.start)
       this.$refs.video.addEventListener("ended", this.end)
+      this.$refs.video.addEventListener("waiting", this.waiting)
+      this.$refs.video.addEventListener("playing", this.loaded)
       this.$refs.line.addEventListener("touchstart", this.moveStart)
       this.$refs.line.addEventListener("touchmove", this.move)
       this.$refs.line.addEventListener("touchend", this.moveEnd)
@@ -125,7 +167,7 @@
       musicUrl() {
         this.$refs.video.currentTime = 0
         this.$refs.currentLine.style.width = "0"
-        this.$store.commit("stopMusic", false)
+        this.$refs.video.autoplay = true
       },
       isPlay(newValue) {
         if (newValue)
@@ -149,6 +191,9 @@
       },
       length() {
         return this.$store.getters.length
+      },
+      currentMode() {
+        return this.$store.getters.getMode
       }
     }
   }
@@ -216,6 +261,24 @@
   .controls .box div {
     position: absolute;
     top: 0;
+  }
+
+  .controls .box .mode {
+    top: 10px;
+    left: -5px;
+  }
+
+  .controls .box .mode span {
+    font-size: 30px;
+  }
+
+  .controls .box .downLoad {
+    top: 8px;
+    right: -10px;
+  }
+
+  .controls .box .downLoad span {
+    font-size: 35px;
   }
 
   .controls .box .pre {

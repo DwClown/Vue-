@@ -9,7 +9,8 @@ export default new Vuex.Store({
     currentSongIndex: 0,
     isFullScreen: false,
     isPlay: false,
-    currentLrc: '歌词'
+    currentLrc: '歌词',
+    mode: 2,
   },
   getters: {
     //歌曲列表长度
@@ -45,6 +46,10 @@ export default new Vuex.Store({
     //返回当前歌词
     getCurrentLrc(state) {
       return state.currentLrc
+    },
+    //返回播放模式 0随机 1单曲循环 2列表播放
+    getMode(state) {
+      return state.mode
     }
   },
   mutations: {
@@ -86,7 +91,7 @@ export default new Vuex.Store({
     stopMusic(state, status) {
       state.isPlay = status
     },
-    //改变播放状态
+    //切换播放状态
     changePlay(state) {
       state.isPlay = !state.isPlay
     },
@@ -107,7 +112,11 @@ export default new Vuex.Store({
     //修改当前歌词
     changeCurrentLrc(state, lrc) {
       state.currentLrc = lrc
-    }
+    },
+    //修改播放模式
+    changePlayMode(state, mode) {
+      state.mode = mode
+    },
   },
   actions: {},
   modules: {}

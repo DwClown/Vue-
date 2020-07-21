@@ -1,16 +1,16 @@
 <template>
-  <div class="player" ref="player">
-    <div class="downHeader">
-      <left>
-        <img src="~assets/images/down.svg" slot="left" @click="downClick">
-      </left>
-      <center :title="title"/>
-      <right/>
-    </div>
-    <div class="box">
-      <play-main :song-info="songInfo"/>
-      <controls :music-url="songUrl" :lrc="song.lrc"/>
-    </div>
+  <div class="player" ref="player" >
+      <div class="downHeader">
+        <left>
+          <img src="~assets/images/down.svg" slot="left" @click="downClick">
+        </left>
+        <center :title="title"/>
+        <right/>
+      </div>
+      <div class="box" v-if="song">
+        <play-main :song-info="songInfo"/>
+        <controls :music-url="songUrl" :lrc="song.lrc"/>
+      </div>
   </div>
 </template>
 
