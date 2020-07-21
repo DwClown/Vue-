@@ -97,13 +97,17 @@
         this.time = this.$refs.video.duration
       },
       end() {
-        this.$store.commit("stopMusic", false)
+        //this.$store.commit("stopMusic", false)
         this.currentTime = 0
         this.$refs.currentLine.style.width = "0"
         this.currentTime = "0:00"
         this.$store.commit("changeCurrentLrc", "")
-        if (this.currentMode === 2)
+        if (this.currentMode === 2) {
           this.nextSong()
+        } else if (this.currentMode === 0) {
+          let index = Math.floor(Math.random() * this.length)
+          this.$store.commit("playIndexMusic", index)
+        }
       },
       moveStart(e) {
         this.$refs.video.pause()
@@ -136,14 +140,14 @@
       nextSong() {
         this.$store.commit("nextSong")
       },
-      waiting() {
-        this.$store.commit("stopMusic", false)
-        this.$refs.video.pause()
-      },
-      loaded() {
-        this.$store.commit("stopMusic", true)
-        this.$refs.video.play()
-      },
+      // waiting() {
+      //   this.$store.commit("stopMusic", false)
+      //   this.$refs.video.pause()
+      // },
+      // loaded() {
+      //   this.$store.commit("stopMusic", true)
+      //   this.$refs.video.play()
+      // },
       modeClick() {
         this.status++
         if (this.status > 2)
@@ -157,11 +161,13 @@
       this.$refs.video.addEventListener("timeupdate", this.playing)
       this.$refs.video.addEventListener("canplay", this.start)
       this.$refs.video.addEventListener("ended", this.end)
-      this.$refs.video.addEventListener("waiting", this.waiting)
-      this.$refs.video.addEventListener("playing", this.loaded)
+      // this.$refs.video.addEventListener("waiting", this.waiting)
+      // this.$refs.video.addEventListener("playing", this.loaded)
       this.$refs.line.addEventListener("touchstart", this.moveStart)
       this.$refs.line.addEventListener("touchmove", this.move)
       this.$refs.line.addEventListener("touchend", this.moveEnd)
+      this.$store.commit("stopMusic", false)
+      this.$refs.video.autoplay = false
     },
     watch: {
       musicUrl() {

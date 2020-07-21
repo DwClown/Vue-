@@ -117,6 +117,10 @@ export default new Vuex.Store({
     changePlayMode(state, mode) {
       state.mode = mode
     },
+    //播放指定位置的音乐
+    playIndexMusic(state, index) {
+      state.currentSongIndex = index
+    }
   },
   actions: {},
   modules: {}
