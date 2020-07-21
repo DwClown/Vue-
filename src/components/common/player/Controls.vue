@@ -51,7 +51,7 @@
         allTime: '00:00',
         time: 0,
         currentTime: '0:00',
-        status: 0,
+        status: 2,
         mode: [
           {status: 0, class: "iconfont icon-suijibofang"},
           {status: 1, class: "iconfont icon-danquxunhuan"},
@@ -97,16 +97,19 @@
         this.time = this.$refs.video.duration
       },
       end() {
-        //this.$store.commit("stopMusic", false)
         this.currentTime = 0
         this.$refs.currentLine.style.width = "0"
         this.currentTime = "0:00"
         this.$store.commit("changeCurrentLrc", "")
-        if (this.currentMode === 2) {
-          this.nextSong()
-        } else if (this.currentMode === 0) {
+        this.$refs.video.autoplay = true
+        //随机播放
+        if (this.currentMode === 0) {
           let index = Math.floor(Math.random() * this.length)
           this.$store.commit("playIndexMusic", index)
+        } else if (this.currentMode === 1) { //单曲循环
+          this.$refs.video.loop = true
+        } else {  //列表播放
+          this.nextSong()
         }
       },
       moveStart(e) {
@@ -136,9 +139,11 @@
       },
       preSong() {
         this.$store.commit("preSong")
+        this.$refs.video.play()
       },
       nextSong() {
         this.$store.commit("nextSong")
+        this.$refs.video.play()
       },
       // waiting() {
       //   this.$store.commit("stopMusic", false)
@@ -173,7 +178,6 @@
       musicUrl() {
         this.$refs.video.currentTime = 0
         this.$refs.currentLine.style.width = "0"
-        this.$refs.video.autoplay = true
       },
       isPlay(newValue) {
         if (newValue)
@@ -188,6 +192,16 @@
           this.currentTime = 0
           this.$refs.currentLine.style.width = "0"
           this.$store.commit("stopMusic", false)
+        }
+      },
+      currentMode(newValue) {
+        //单曲循环
+        if (newValue === 1) {
+          this.$refs.video.loop = true
+          this.$refs.video.play()
+          //非单曲循环
+        } else {
+          this.$refs.video.loop = false
         }
       }
     },
