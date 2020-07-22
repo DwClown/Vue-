@@ -57,7 +57,7 @@
         this.songList = this.songList.concat(res.map(item => ({
           id: item.id,
           name: item.name,
-          singer: item.singer
+          singer: item.singer,
         })))
       },
       async fetchRankSongListData() {

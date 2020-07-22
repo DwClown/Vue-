@@ -46,7 +46,7 @@
             id: res.getSingerInfo.Fsinger_mid,
             name: res.getSingerInfo.Fsinger_name
           },
-          name: res.getAlbumInfo.Falbum_name
+          name: res.getAlbumInfo.Falbum_name,
         }
         this.songList = res.getSongInfo.map(item => ({
           id: item.songmid,
@@ -54,7 +54,7 @@
           singer: item.singer.map(value => ({
             id: value.mid,
             name: value.name
-          }))
+          })),
         }))
       },
       async fetchAlbumData() {

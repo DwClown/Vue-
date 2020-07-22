@@ -22,17 +22,17 @@
       <div class="next" @click.stop="nextSong">
         <span class="iconfont icon-yduixiayiqu"></span>
       </div>
-      <div class="downLoad">
+      <div class="downLoad" @click="downLoad">
         <span class="iconfont icon-ziyuan-"></span>
       </div>
     </div>
-    <audio id="video" autoplay ref="video" :src="musicUrl">
-      <source :src="musicUrl">
+    <audio id="video" autoplay ref="video" :src="musicUrl" preload="auto">
     </audio>
   </div>
 </template>
 
 <script>
+  import { saveAs } from 'file-saver';
 
   export default {
     name: "Controls",
@@ -43,6 +43,14 @@
       },
       lrc: {
         type: Array,
+        required: true
+      },
+      name: {
+        type: String,
+        required: true
+      },
+      songDownLoad: {
+        type: String,
         required: true
       }
     },
@@ -148,14 +156,6 @@
         this.$store.commit("nextSong")
         this.$refs.video.play()
       },
-      // waiting() {
-      //   this.$store.commit("stopMusic", false)
-      //   this.$refs.video.pause()
-      // },
-      loaded() {
-        this.$store.commit("stopMusic", true)
-        this.$refs.video.play()
-      },
       modeClick() {
         this.status++
         if (this.status > 2)
@@ -164,21 +164,21 @@
           this.status = 2
         this.$store.commit("changePlayMode", this.status)
       },
+      downLoad() {
+        saveAs(this.songDownLoad,`${this.name}.mp3`)
+      }
     },
     mounted() {
       this.$refs.video.addEventListener("timeupdate", this.playing)
       this.$refs.video.addEventListener("canplay", this.start)
       this.$refs.video.addEventListener("ended", this.end)
-      // this.$refs.video.addEventListener("waiting", this.waiting)
-      this.$refs.video.addEventListener("playing", this.loaded)
       this.$refs.line.addEventListener("touchstart", this.moveStart)
       this.$refs.line.addEventListener("touchmove", this.move)
       this.$refs.line.addEventListener("touchend", this.moveEnd)
-      //
       this.$refs.video.autoplay = false
     },
     watch: {
-      musicUrl(newValue) {
+      musicUrl() {
         this.$refs.video.currentTime = 0
         this.$refs.currentLine.style.width = "0"
       },

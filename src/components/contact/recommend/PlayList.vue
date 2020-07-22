@@ -50,11 +50,11 @@
         }
         this.songList = res[0].songlist.map(item => ({
           id: item.mid,
-          name: item.title  ,
+          name: item.title,
           singer: item.singer.map(value => ({
             id: value.mid,
             name: value.name
-          }))
+          })),
         }))
       },
       async fetchPlayListData() {

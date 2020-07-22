@@ -24,3 +24,19 @@ export function getSongLrc(params) {
     params
   })
 }
+
+//获取歌曲的mediaId
+export function getSongMediaId(params) {
+  return apiRequest({
+    url:'/song',
+    params
+  })
+}
+
+//获取歌曲下载链接
+export function getSongDownLoad(params) {
+return apiRequest({
+  url:'/song/url',
+  params
+})
+}

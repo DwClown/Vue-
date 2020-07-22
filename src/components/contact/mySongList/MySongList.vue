@@ -3,13 +3,12 @@
     <back-header/>
     <my-scroll>
       <ul>
-        <li class="songItem" v-for="(item,index) of songList" :key="index"
-            @click.stop="myDelete(index)">
+        <li class="songItem" v-for="(item,index) of songList" :key="index">
           <div class="name">{{item.name}}</div>
           <div class="singer">
             <span v-for="value of item.singer" :key="value.id">{{value.name}}</span>
           </div>
-          <div class="delete">
+          <div class="delete" @click.stop="myDelete(index)">
             <img src="~assets/images/delete.svg">
           </div>
         </li>
@@ -36,7 +35,7 @@
     methods: {
       myDelete(index) {
         this.$store.commit("delete", index)
-        this.$store.commit("stopMusic",false)
+        this.$store.commit("stopMusic", false)
       }
     },
     created() {
@@ -52,7 +51,7 @@
     z-index: 85;
     background-color: #222222;
     position: fixed;
-    top:0;
+    top: 0;
     left: 0;
   }
 

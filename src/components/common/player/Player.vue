@@ -7,9 +7,9 @@
         <center :title="title"/>
         <right/>
       </div>
-      <div class="box" v-show="song">
+      <div class="box">
         <play-main :song-info="songInfo" v-if="Object.keys(songInfo).length"/>
-        <controls :music-url="songUrl" :lrc="songLrc"/>
+        <controls :music-url="songUrl" :lrc="songLrc"  :name="name" :song-down-load="songDownLoad"/>
       </div>
   </div>
 </template>
@@ -30,7 +30,9 @@
         title: 'Goo Music',
         songInfo: {},
         songUrl: '',
-        songLrc: []
+        songLrc: [],
+        songDownLoad:'',
+        name:'',
       }
     },
     methods: {
@@ -61,13 +63,15 @@
       song(newValue) {
         if (newValue !== null) {
           this.songInfo = {
-            id: this.song.id,
-            img: this.song.img,
-            name: this.song.name,
-            singer: this.song.singer,
+            id: newValue.id,
+            img: newValue.img,
+            name: newValue.name,
+            singer: newValue.singer,
           }
           this.songUrl = newValue.url
           this.songLrc = newValue.lrc
+          this.songDownLoad = newValue.downLoad
+          this.name = newValue.name
         }
       }
     },
@@ -85,6 +89,8 @@
         }
         this.songUrl = this.song.url
         this.songLrc = this.song.lrc
+        this.songDownLoad = this.song.downLoad
+        this.name = this.song.name
       }else{
         console.log("没有歌曲");
       }

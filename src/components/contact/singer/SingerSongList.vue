@@ -56,7 +56,7 @@
           singer: item.musicData.singer.map(value => ({
             id: value.mid,
             name: value.name
-          }))
+          })),
         })))
       },
       async fetchSingerSongListData() {
